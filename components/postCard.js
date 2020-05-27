@@ -36,10 +36,10 @@ class PostCard extends React.Component {
       anchorEl: e.currentTarget
     })
   }
-  clickShareButton = (e, title) => {
+  clickShareButton = (e, title, id) => {
     e.preventDefault();
     const width = (window.screen.width - 500) / 2;
-    window.open(`http://twitter.com/share?url=https://blog.dai.gd&text=${title}&related=[${process.env.twitterID}]`, null, `width=500,height=500,left=${width}`)
+    window.open(`http://twitter.com/share?url=https://blog.dai.gd/posts/${id}&text=${title}&related=[${process.env.twitterID}]`, null, `width=500,height=500,left=${width}`)
   }
   closeSharemenu = e => {
     e.preventDefault()
@@ -55,7 +55,7 @@ class PostCard extends React.Component {
   }
   render() {
     return (
-      <div>
+      <>
         {this.props.posts.contents.map(one => {
           return (
             <div className="card" key={one.id}>
@@ -84,7 +84,7 @@ class PostCard extends React.Component {
                         <ShareIcon />
                       </IconButton>
                       <Menu open={this.state.isOpenShareMenu} onClose={this.closeSharemenu} anchorEl={this.state.anchorEl}>
-                        <MenuItem onClick={e => { this.clickShareButton(e, one.title) }}>
+                        <MenuItem onClick={e => { this.clickShareButton(e, one.title, id) }}>
                           <ListItemIcon>
                             <TwitterIcon />
                           </ListItemIcon>
@@ -126,7 +126,7 @@ class PostCard extends React.Component {
           margin-top:0px;
         }
         `}</style>
-      </div>
+      </>
     )
   }
 }
