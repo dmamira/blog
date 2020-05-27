@@ -5,7 +5,7 @@ import Router from 'next/router'
 export const getStaticProps = async ctx => {
   const p = ctx.params ? Number(ctx.params.number) - 1 : 0;
   const fetch = require('node-fetch');
-  const posts = await fetch(`https://dai.microcms.io/api/v1/posts?limit=5&offset=${p}`, {
+  const posts = await fetch(`https://dai.microcms.io/api/v1/posts?limit=5&offset=${p * 5}`, {
     method: 'GET',
     headers: {
       'X-API-KEY': process.env.APIKEY
@@ -15,6 +15,7 @@ export const getStaticProps = async ctx => {
 }
 
 export const getStaticPaths = async () => {
+  const fetch = require('node-fetch');
   const response = await fetch(`https://dai.microcms.io/api/v1/posts?limit=5`, {
     method: 'GET',
     headers: {
