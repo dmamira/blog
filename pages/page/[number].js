@@ -15,7 +15,7 @@ export const getStaticProps = async ctx => {
 }
 
 export const getStaticPaths = async () => {
-  const response = await fetch(`https://dai.microcms.io/api/v1/posts`, {
+  const response = await fetch(`https://dai.microcms.io/api/v1/posts?limit=5`, {
     method: 'GET',
     headers: {
       'X-API-KEY': process.env.APIKEY
