@@ -40,7 +40,7 @@ class PostCard extends React.Component {
     e.preventDefault();
     const width = (window.screen.width - 500) / 2;
     const height = (window.screen.height - 500) / 2
-    window.open(`http://twitter.com/share?url=https://blog.dai.gd/posts/${id}&text=${title}&related=[${process.env.twitterID}]`, null, `width=500,height=500,left=${width}`)
+    window.open(`http://twitter.com/share?url=https://blog.dai.gd/posts/${id}&text=${title}&related=[${process.env.twitterID}]`, null, `width=500,height=500,left=${width},height=${height}`)
   }
   closeSharemenu = e => {
     e.preventDefault()
