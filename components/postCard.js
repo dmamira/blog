@@ -85,7 +85,7 @@ class PostCard extends React.Component {
                         <ShareIcon />
                       </IconButton>
                       <Menu open={this.state.isOpenShareMenu} onClose={this.closeSharemenu} anchorEl={this.state.anchorEl}>
-                        <MenuItem onClick={e => { this.clickShareButton(e, one.title, id) }}>
+                        <MenuItem onClick={e => { this.clickShareButton(e, one.title, one.id) }}>
                           <ListItemIcon>
                             <TwitterIcon />
                           </ListItemIcon>
