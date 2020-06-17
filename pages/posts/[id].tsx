@@ -37,6 +37,7 @@ export const getStaticProps = async ctx => {
     });
     return { props: { posts: await posts.json() } }
 }
+
 export const getStaticPaths = async () => {
     const response = await fetch(`https://dai.microcms.io/api/v1/posts?limit=1000`, {
         method: 'GET',
@@ -46,44 +47,50 @@ export const getStaticPaths = async () => {
     });
     const posts = await response.json();
     const paths = posts.contents.map(one => {
-      return  { params: { id: one.id } }
+        return { params: { id: one.id } }
     });
     return { paths: paths, fallback: false }
 }
 
-export default class extends React.Component<Props> {
-    render() {
-        const transform = node => {
-            if (node.name === 'code') {
-                return React.createElement(SyntaxHighlighter, { language: 'javascript', style: darcula }, node.children[0].data);
-            }
+const Posts = (props: Props) => {
+    const transform = node => {
+        if (node.name === 'code') {
+            return React.createElement(SyntaxHighlighter, { language: 'javascript', style: darcula }, node.children[0].data);
         }
-        const shareButtonStyle = {
-            height: '24px'
-        }
-        return (
-            <div className='postWrapper'>
-                <Head>
-                    <title>{this.props.posts.title} - Dai's blog</title>
-                    <meta name='description' content={this.props.posts.description} />
-                    <meta name='twitter:card' content='summary_large_image' />
-                    <meta name='twitter:site' content='@dmarai0422' />
-                    <meta name='og:title' content={`${this.props.posts.title}`} />
-                    <meta name='og:description' content={this.props.posts.description} />
-                    <meta name='og:url' content={`https://blog.dai.gd/posts/${this.props.posts.id}`} />
-                    <meta name='og:image' content={this.props.posts.image ? this.props.posts.image.url : ''} />
-                </Head>
-                <h1>{this.props.posts.title}</h1>
-                <p className='lastUpdate'>最終更新日:{this.props.posts.updatedAt.split('T')[0]}</p>
-                <div className="shareButtonWrapper">
-                    <TwitterShareButton title={this.props.posts.title} style={shareButtonStyle} url={`https://blog.dai.gd/${this.props.posts.id}`}>
-                        <TwitterIcon />
-                    </TwitterShareButton>
-                </div>
-                {parse(this.props.posts.body, { replace: transform })}
-                <style>{
+    }
+    const shareButtonStyle = {
+        height: '24px'
+    }
+    return (
+        <div className='postWrapper'>
+            <Head>
+                <title>{props.posts.title} - Dai's blog</title>
+                <meta name='description' content={props.posts.description} />
+                <meta name='twitter:card' content='summary_large_image' />
+                <meta name='twitter:site' content='@dmarai0422' />
+                <meta name='og:title' content={`${props.posts.title}`} />
+                <meta name='og:description' content={props.posts.description} />
+                <meta name='og:url' content={`https://blog.dai.gd/posts/${props.posts.id}`} />
+                <meta name='og:image' content={props.posts.image ? props.posts.image.url : ''} />
+            </Head>
+            <h1>{props.posts.title}</h1>
+            <p className='lastUpdate'>最終更新日:{props.posts.updatedAt.split('T')[0]}</p>
+            <div className="shareButtonWrapper">
+                <TwitterShareButton title={props.posts.title} style={shareButtonStyle} url={`https://blog.dai.gd/posts/${props.posts.id}`}>
+                    <TwitterIcon />
+                </TwitterShareButton>
+            </div>
+            {parse(props.posts.body, { replace: transform })}
+            {props.posts.tags.map(currentItem => {
+                return (
+                    <div style={{ marginBottom: '20px', marginRight: '5px', display: 'inline-block', marginTop: '20px', backgroundColor: '#F2F2F2', padding: '5px 10px' }}>
+                        <p style={{ display: 'inline-block', color: '#757575', fontSize: '15px', lineHeight: '1.2em', marginTop: '0px', padding: '0px' }}>{currentItem.tags}</p>
+                    </div>
+                )
+            })}
+            <style>{
 
-                    `
+                `
                     p{
                         margin-top:0.86em;
                         font-size:20px;
@@ -128,9 +135,9 @@ export default class extends React.Component<Props> {
                         max-width:100%;
                     }
                     `
-                }
-                </style>
-                <style jsx>{`
+            }
+            </style>
+            <style jsx>{`
         .postWrapper{
             width:100%;
             max-width:680px;
@@ -181,7 +188,8 @@ export default class extends React.Component<Props> {
             max-width:100%;
         }
         `}</style>
-            </div>
-        )
-    }
+        </div>
+    )
 }
+
+export default Posts;

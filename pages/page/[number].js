@@ -29,15 +29,13 @@ export const getStaticPaths = async () => {
   for (let i = 1; i <= Math.ceil(totalCount / limit); i++) {
     numberArray.push({ params: { number: i.toString() } });
   }
-  return {paths:numberArray,fallback:false}
+  return { paths: numberArray, fallback: false }
 }
 
-class Home extends React.Component {
-  render() {
-    return (
-      <PostCard posts={this.props.posts} number={this.props.number} />
-    )
-  }
+const Page = props => {
+  return (
+    <PostCard posts={props.posts} number={props.number} />
+  )
 }
 
-export default Home;
+export default Page;

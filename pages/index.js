@@ -1,8 +1,6 @@
 import React from 'react';
 import PostCard from '../components/postCard';
 
-
-
 export const getStaticProps = async () => {
   const p = 0;
   const fetch = require('node-fetch');
@@ -16,12 +14,10 @@ export const getStaticProps = async () => {
   return { props: { posts: posts } };
 }
 
-class Home extends React.Component {
-  render() {
-    return (
-      <PostCard posts={this.props.posts}/>
-    )
-  }
+const Home = (props) => {
+  return (
+    <PostCard posts={props.posts} />
+  )
 }
 
 export default Home;

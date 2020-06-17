@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
@@ -16,48 +16,37 @@ import Pagination from '@material-ui/lab/Pagination'
 import Router from 'next/router'
 import Head from 'next/head'
 
-class PostCard extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isOpenShareMenu: false,
-      anchorEl: null
-    }
-  }
-  componentDidMount() {
-    if (this.props.number == 1) {
-      Router.push('/')
-    }
-  }
-  OpenShareMenu = e => {
+const PostCard = props => {
+  const [isOpenShareMenu, setIsOpenSharemenu] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  useEffect(() => {
+    if (props.number == 1) Router.push('/');
+  }, []);
+  const OpenShareMenu = (e: React.MouseEvent<HTMLInputElement,MouseEvent>) => {
     e.preventDefault();
-    this.setState({
-      isOpenShareMenu: true,
-      anchorEl: e.currentTarget
-    })
+    setIsOpenSharemenu(true);
+    setAnchorEl(e.currentTarget);
   }
-  clickShareButton = (e, title, id) => {
+  const clickShareButton = (e: React.MouseEvent<HTMLLIElement,MouseEvent>, title, id) => {
     e.preventDefault();
     const width = (window.screen.width - 500) / 2;
-    const height = (window.screen.height - 500) / 2
-    window.open(`http://twitter.com/share?url=https://blog.dai.gd/posts/${id}&text=${title}&related=[${process.env.twitterID}]`, null, `width=500,height=500,left=${width},height=${height}`)
+    const height = (window.screen.height - 500) / 2;
+    window.open(`http://twitter.com/share?url=https://blog.dai.gd/posts/${id}&text=${title}&related=[${process.env.twitterID}]`, null, `width=500,height=500,left=${width},height=${height}`);
   }
-  closeSharemenu = e => {
-    e.preventDefault()
-    this.setState({
-      isOpenShareMenu: false
-    })
+  const closeSharemenu = (e: React.MouseEvent<HTMLLIElement,MouseEvent>) => {
+    e.preventDefault();
+    setIsOpenSharemenu(false);
   }
-  onChangePage = (e, p) => {
+  const onChangePage = (e:React.MouseEvent<HTMLLIElement,MouseEvent>, p) => {
     if (p == 1) {
       Router.push('/');
     }
     Router.push(`/page/[number]`, `/page/${p}`)
   }
-  render() {
-    return (
+  return (
+    (
       <>
-        {this.props.posts.contents.map(one => {
+        {props.posts.contents.map(one => {
           return (
             <div className="card" key={one.id}>
               <Head>
@@ -81,11 +70,11 @@ class PostCard extends React.Component {
                       </Typography>
                     </CardContent>
                     <CardActions>
-                      <IconButton onClick={this.OpenShareMenu}>
+                      <IconButton onClick={OpenShareMenu}>
                         <ShareIcon />
                       </IconButton>
-                      <Menu open={this.state.isOpenShareMenu} onClose={this.closeSharemenu} anchorEl={this.state.anchorEl}>
-                        <MenuItem onClick={e => { this.clickShareButton(e, one.title, one.id) }}>
+                      <Menu open={isOpenShareMenu} onClose={closeSharemenu} anchorEl={anchorEl}>
+                        <MenuItem onClick={(e:React.MouseEvent<HTMLLIElement,MouseEvent>) => { clickShareButton(e, one.title, one.id) }}>
                           <ListItemIcon>
                             <TwitterIcon />
                           </ListItemIcon>
@@ -100,7 +89,7 @@ class PostCard extends React.Component {
           )
         })}
         <div className="paginationWrapper">
-          <Pagination onChange={this.onChangePage} defaultPage={Number(this.props.number || 1)} count={Math.ceil(this.props.posts.totalCount / this.props.posts.limit)} variant="outlined" shape="rounded" color="primary" />
+          <Pagination onChange={onChangePage} defaultPage={Number(props.number || 1)} count={Math.ceil(props.posts.totalCount / props.posts.limit)} variant="outlined" shape="rounded" color="primary" />
         </div>
         <style jsx>{`
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap');
@@ -129,7 +118,7 @@ class PostCard extends React.Component {
         `}</style>
       </>
     )
-  }
+  )
 }
 
 export default PostCard;
