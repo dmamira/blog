@@ -40,3 +40,5 @@ MyApp.propTypes = {
     Component: PropTypes.func.isRequired,
     pageProps: PropTypes.object.isRequired,
 };
+
+export const config = { amp: 'hybrid' }
