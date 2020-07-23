@@ -1,124 +1,132 @@
-import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
-import Card from '@material-ui/core/Card'
-import CardContent from '@material-ui/core/CardContent'
-import Typography from '@material-ui/core/Typography'
-import CardMedia from '@material-ui/core/CardMedia'
-import CardActions from '@material-ui/core/CardActions'
-import ShareIcon from '@material-ui/icons/Share';
-import IconButton from '@material-ui/core/IconButton';
-import Menu from '@material-ui/core/Menu'
-import MenuItem from '@material-ui/core/MenuItem'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import TwitterIcon from '@material-ui/icons/Twitter'
-import { TwitterShareButton } from 'react-share'
-import Pagination from '@material-ui/lab/Pagination'
-import Router from 'next/router'
-import Head from 'next/head'
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import Typography from "@material-ui/core/Typography";
+import CardActions from "@material-ui/core/CardActions";
+import ShareIcon from "@material-ui/icons/Share";
+import IconButton from "@material-ui/core/IconButton";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import TwitterIcon from "@material-ui/icons/Twitter";
 
-const PostCard = props => {
+interface Props {
+  post: {
+    id: string;
+    createdAt: string;
+    updatedAt: string;
+    title: string;
+    body: string;
+    tags: [
+      {
+        id: string;
+        createdAt: string;
+        updatedAt: string;
+        tags: string;
+      }
+    ];
+    description: string;
+    image?: {
+      url: string;
+    };
+  };
+}
+
+const PostCard = (props: Props) => {
   const [isOpenShareMenu, setIsOpenSharemenu] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
-  useEffect(() => {
-    if (props.number == 1) Router.push('/');
-  }, []);
-  const OpenShareMenu = (e: React.MouseEvent<HTMLInputElement,MouseEvent>) => {
+  const OpenShareMenu = (e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
     e.preventDefault();
     setIsOpenSharemenu(true);
     setAnchorEl(e.currentTarget);
-  }
-  const clickShareButton = (e: React.MouseEvent<HTMLLIElement,MouseEvent>, title, id) => {
+  };
+  const clickShareButton = (
+    e: React.MouseEvent<HTMLLIElement, MouseEvent>,
+    title,
+    id
+  ) => {
     e.preventDefault();
     const width = (window.screen.width - 500) / 2;
     const height = (window.screen.height - 500) / 2;
-    window.open(`http://twitter.com/share?url=https://blog.dai.gd/posts/${id}&text=${title}&related=[${process.env.twitterID}]`, null, `width=500,height=500,left=${width},height=${height}`);
-  }
-  const closeSharemenu = (e: React.MouseEvent<HTMLLIElement,MouseEvent>) => {
+    window.open(
+      `http://twitter.com/share?url=https://blog.dai.gd/posts/${id}&text=${title}&related=[${process.env.twitterID}]`,
+      null,
+      `width=500,height=500,left=${width},top=${height}`
+    );
+  };
+  const closeSharemenu = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
     e.preventDefault();
     setIsOpenSharemenu(false);
-  }
-  const onChangePage = (e:React.MouseEvent<HTMLLIElement,MouseEvent>, p) => {
-    if (p == 1) {
-      Router.push('/');
-    }
-    Router.push(`/page/[number]`, `/page/${p}`)
-  }
+  };
+
+  const { id, image, title, description } = props.post;
   return (
-    (
-      <>
-        {props.posts.contents.map(one => {
-          return (
-            <div className="card" key={one.id}>
-              <Head>
-                <title>Dai's Blog</title>
-                <meta name='description' content='思ったことを書き連ねます。' />
-                <meta name='twitter:card' content='summary' />
-                <meta name='twitter:site' content='@dmarai0422' />
-                <meta name='og:title' content="Dai's Blog" />
-                <meta name='og:description' content='思ったことを書き連ねます。' />
-                <meta name='og:url' content={`https://blog.dai.gd/`} />
-                <meta name='og:image' content='https://blog.dai.gd/icon.png' />
-              </Head>
-              <Link href="/posts/[id]" as={`/posts/${one.id}`}>
-                <a>
-                  <Card>
-                    <img style={{ width: "100%", maxHeight: "300px", "objectFit": "cover" }} src={one.image ? one.image.url : ""} />
-                    <CardContent>
-                      <h1>{one.title}</h1>
-                      <Typography variant="body2" color="textSecondary" component="p">
-                        {one.description}
-                      </Typography>
-                    </CardContent>
-                    <CardActions>
-                      <IconButton onClick={OpenShareMenu}>
-                        <ShareIcon />
-                      </IconButton>
-                      <Menu open={isOpenShareMenu} onClose={closeSharemenu} anchorEl={anchorEl}>
-                        <MenuItem onClick={(e:React.MouseEvent<HTMLLIElement,MouseEvent>) => { clickShareButton(e, one.title, one.id) }}>
-                          <ListItemIcon>
-                            <TwitterIcon />
-                          </ListItemIcon>
-                          Twitterでシェア
-                        </MenuItem>
-                      </Menu>
-                    </CardActions>
-                  </Card>
-                </a>
-              </Link>
-            </div>
-          )
-        })}
-        <div className="paginationWrapper">
-          <Pagination onChange={onChangePage} defaultPage={Number(props.number || 1)} count={Math.ceil(props.posts.totalCount / props.posts.limit)} variant="outlined" shape="rounded" color="primary" />
-        </div>
-        <style jsx>{`
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap');
-        a{
-          font-family: 'Noto Sans JP', sans-serif;
-          color : white;
-          text-decoration:none;
+    <>
+      <div className="card" key={id}>
+        <Link href="/posts/[id]" as={`/posts/${id}`}>
+          <a>
+            <Card>
+              <img
+                style={{
+                  width: "100%",
+                  maxHeight: "300px",
+                  objectFit: "cover",
+                }}
+                src={image ? image.url : ""}
+              />
+              <CardContent>
+                <h1>{title}</h1>
+                <Typography variant="body2" color="textSecondary" component="p">
+                  {description}
+                </Typography>
+              </CardContent>
+              <CardActions>
+                <IconButton onClick={OpenShareMenu}>
+                  <ShareIcon />
+                </IconButton>
+                <Menu
+                  open={isOpenShareMenu}
+                  onClose={closeSharemenu}
+                  anchorEl={anchorEl}
+                >
+                  <MenuItem
+                    onClick={(
+                      e: React.MouseEvent<HTMLLIElement, MouseEvent>
+                    ) => {
+                      clickShareButton(e, title, id);
+                    }}
+                  >
+                    <ListItemIcon>
+                      <TwitterIcon />
+                    </ListItemIcon>
+                    Twitterでシェア
+                  </MenuItem>
+                </Menu>
+              </CardActions>
+            </Card>
+          </a>
+        </Link>
+      </div>
+      <style jsx>{`
+        a {
+          color: white;
+          text-decoration: none;
         }
-        .card{
-          width:100%;
-          max-width:680px;
-          margin:auto;
-          margin-bottom:20px;
-          padding:0px 20px;
-          box-sizing:border-box;
+        .card {
+          width: 100%;
+          max-width: 680px;
+          margin: auto;
+          margin-bottom: 20px;
+          padding: 0px 20px;
+          box-sizing: border-box;
         }
-        .paginationWrapper{
-          width:100%;
-          display:flex;
-          justify-content: center;
-          margin-bottom:20px;
+        h1 {
+          margin-top: 0px;
         }
-        h1{
-          margin-top:0px;
-        }
-        `}</style>
-      </>
-    )
-  )
-}
+      `}</style>
+    </>
+  );
+};
 
 export default PostCard;
