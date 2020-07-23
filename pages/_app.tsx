@@ -3,6 +3,11 @@ import PropTypes from 'prop-types';
 import Head from 'next/head';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Header from '../components/header'
+import Footer from '../components/footer'
+import Router from 'next/router'
+import * as gtag from '../lib/gtag'
+
+Router.events.on('routeChangeComplete', url => gtag.pageview(url))
 
 export default function MyApp(props) {
     const { Component, pageProps } = props;
@@ -25,6 +30,7 @@ export default function MyApp(props) {
                 <CssBaseline />
                 <Header/>
                 <Component {...pageProps} />
+                <Footer/>
             </React.Fragment>
             <style jsx>{`
       .wrapper{
