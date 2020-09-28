@@ -64,7 +64,7 @@ const PostCard = (props: Props) => {
   return (
     <>
       <div className="card" key={id}>
-        <WrapLink href="/posts/[id]" as={`/posts/${id}`}>
+        <WrapLink href={`/posts/${id}`}>
           <a>
             <Card>
               <img

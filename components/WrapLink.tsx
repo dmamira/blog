@@ -1,17 +1,17 @@
 import { resolve } from "url";
 import React, { useMemo } from "react";
+import isIPFS from 'is-ipfs';
 import Link from "next/link";
 
-const WrapLink = ({ href, as, ...rest }) => {
-  const newAs = useMemo(() => {
-    let baseURI_as = as || href;
+const WrapLink = ({ href, ...rest }) => {
+  const newHref = useMemo(() => {
+    let baseURI_as = href;
     // make absolute url relative
     // when displayed in url bar
-    if (process.env.NEXT_PUBLIC_ISIPFS) {
+    if (baseURI_as.startsWith("/") && isIPFS.ipfsUrl(document.baseURI)) {
       //  for static html compilation
-      baseURI_as = "." + baseURI_as;
+      baseURI_as = "." + href;
       // <IPFSLink href="/about"> => <a class="jsx-2055897931" href="./about">About</a>
-
       // on the client
       //   document is unavailable when compiling on the server
       if (typeof document !== "undefined") {
@@ -20,8 +20,9 @@ const WrapLink = ({ href, as, ...rest }) => {
       }
     }
     return baseURI_as;
-  }, [as, href]);
-  return <Link {...rest} href={href} as={newAs} />;
+  }, [href]);
+
+  return <Link {...rest} href={newHref} />;
 };
 
 export default WrapLink;
