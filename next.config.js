@@ -1,5 +1,7 @@
 module.exports = {
-    env:{
-        twitterID:'@damarai0422'
-    }
-}
+  env: {
+    twitterID: "@damarai0422",
+  },
+  assetPrefix: "./",
+  exportTrailingSlash: true,
+};

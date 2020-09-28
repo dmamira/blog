@@ -1,13 +1,24 @@
 import React from "react";
 import Document, { Html, Head, Main, NextScript } from "next/document";
 import { ServerStyleSheets } from "@material-ui/core/styles";
-import { GA_TRACKING_ID } from '../lib/gtag'
+import { GA_TRACKING_ID } from "../lib/gtag";
 
+const scriptTxt = `
+(function () {
+  const { pathname } = window.location
+  const ipfsMatch = /.*\\/Qm\\w{44}\\//.exec(pathname)
+  const base = document.createElement('base')
+
+  base.href = ipfsMatch ? ipfsMatch[0] : '/'
+  document.head.append(base)
+})();
+`;
 export default class MyDocument extends Document {
   render() {
     return (
       <Html lang="ja">
         <Head>
+          <script dangerouslySetInnerHTML={{ __html: scriptTxt }} />
           <link
             rel="apple-touch-icon"
             sizes="57x57"

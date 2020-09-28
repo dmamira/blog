@@ -6,7 +6,7 @@ import { InstantSearch, Panel, SearchBox,RefinementList } from 'react-instantsea
 const Header = () => {
     return (
         <div className="header">
-            <Link href="/"><a className="title">Dai's Tech Blog</a></Link>
+            <WrapLink href="/"><a className="title">Dai's Tech Blog</a></WrapLink>
             <style jsx>{`
     .header{
         height:60px;

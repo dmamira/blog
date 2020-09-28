@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Link from "next/link";
+import WrapLink from "./WrapLink";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
@@ -64,7 +64,7 @@ const PostCard = (props: Props) => {
   return (
     <>
       <div className="card" key={id}>
-        <Link href="/posts/[id]" as={`/posts/${id}`}>
+        <WrapLink href="/posts/[id]" as={`/posts/${id}`}>
           <a>
             <Card>
               <img
@@ -106,7 +106,7 @@ const PostCard = (props: Props) => {
               </CardActions>
             </Card>
           </a>
-        </Link>
+        </WrapLink>
       </div>
       <style jsx>{`
         a {
