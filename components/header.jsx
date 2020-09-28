@@ -1,5 +1,5 @@
 import React from 'react'
-import Link from 'next/link';
+import WrapLink from './WrapLink';
 import algoliasearch from 'algoliasearch/lite';
 import { InstantSearch, Panel, SearchBox,RefinementList } from 'react-instantsearch-dom';
 
