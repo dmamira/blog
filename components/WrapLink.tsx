@@ -5,12 +5,11 @@ import Link from "next/link";
 const WrapLink = ({ href, as, ...rest }) => {
   const newAs = useMemo(() => {
     let baseURI_as = as || href;
-
     // make absolute url relative
     // when displayed in url bar
-    if (baseURI_as.startsWith("/")) {
+    if (process.env.NEXT_PUBLIC_ISIPFS) {
       //  for static html compilation
-      baseURI_as = "." + href;
+      baseURI_as = "." + baseURI_as;
       // <IPFSLink href="/about"> => <a class="jsx-2055897931" href="./about">About</a>
 
       // on the client
@@ -22,7 +21,6 @@ const WrapLink = ({ href, as, ...rest }) => {
     }
     return baseURI_as;
   }, [as, href]);
-
   return <Link {...rest} href={href} as={newAs} />;
 };
 
