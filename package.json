@@ -12,7 +12,7 @@
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.54",
     "algoliasearch": "^4.4.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.0",
     "html-react-parser": "^0.13.0",
     "is-ipfs": "^2.0.0",
     "next": "9.5.3",
