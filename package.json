@@ -13,7 +13,7 @@
     "@material-ui/lab": "^4.0.0-alpha.54",
     "algoliasearch": "^4.4.0",
     "axios": "^0.19.2",
-    "html-react-parser": "^0.13.0",
+    "html-react-parser": "^1.2.5",
     "is-ipfs": "^2.0.0",
     "next": "9.5.3",
     "node-fetch": "^2.6.0",
