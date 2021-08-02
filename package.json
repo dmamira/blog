@@ -19,7 +19,7 @@
     "node-fetch": "^2.6.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
-    "react-instantsearch-dom": "^6.7.0",
+    "react-instantsearch-dom": "^6.12.1",
     "react-share": "^4.1.0",
     "react-syntax-highlighter": "^13.5.0",
     "xml-js": "^1.6.11"
